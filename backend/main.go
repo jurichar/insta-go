@@ -1,11 +1,12 @@
 package main
 
 import (
-	"insta-go/database"
-	"insta-go/routes"
+	"backend/database"
+	"backend/routes"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func welcome(c *fiber.Ctx) error {
@@ -13,12 +14,20 @@ func welcome(c *fiber.Ctx) error {
 }
 
 func setupRoutes(app *fiber.App) {
+	app.Use(cors.New())
 	// welcome endpoint
 	app.Get("/api", welcome)
 	// user endpoints
 	app.Post("/api/users", routes.CreateUser)
 	app.Get("/api/users", routes.GetUsers)
 	app.Get("/api/users/:id", routes.GetUser)
+	app.Put("/api/users/:id", routes.UpdateUser)
+	app.Delete("/api/users/:id", routes.DeleteUser)
+	// product endpoints
+	app.Post("/api/products", routes.CreateProduct)
+
+	app.Static("/", "../frontend")
+
 }
 
 func main() {

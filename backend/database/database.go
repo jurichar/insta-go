@@ -1,7 +1,7 @@
 package database
 
 import (
-	"insta-go/models"
+	"backend/models"
 	"log"
 	"os"
 
