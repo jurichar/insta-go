@@ -14,6 +14,9 @@ function getUsers() {
         const last_name = document.createElement('li');
         last_name.textContent = `Last name: ${user.last_name}`;
         userList.appendChild(last_name);
+        const id = document.createElement('li');
+        id.textContent = `ID: ${user.id}`;
+        userList.appendChild(id);
       });
       appElement.appendChild(userList);
     })
