@@ -1,5 +1,4 @@
 const apiUrl = 'http://localhost:3000/api/users';
-
 const appElement = document.getElementById('app');
 
 function getUsers() {

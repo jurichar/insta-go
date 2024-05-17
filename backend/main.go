@@ -15,6 +15,9 @@ func welcome(c *fiber.Ctx) error {
 
 func setupRoutes(app *fiber.App) {
 	app.Use(cors.New())
+
+	app.Post("/api/login", routes.Login)
+
 	// welcome endpoint
 	app.Get("/api", welcome)
 	// user endpoints
