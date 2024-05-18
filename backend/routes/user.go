@@ -11,6 +11,8 @@ import (
 type User struct {
 	// this is not the model User, see this as the serializer
 	ID        uint   `json:"id"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
@@ -18,6 +20,8 @@ type User struct {
 func CreateResponseUser(userModel models.User) User {
 	return User{
 		ID:        userModel.ID,
+		Email:     userModel.Email,
+		Password:  userModel.Password,
 		FirstName: userModel.FirstName,
 		LastName:  userModel.LastName,
 	}
