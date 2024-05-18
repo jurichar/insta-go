@@ -4,8 +4,12 @@ import (
 	"backend/database"
 	"backend/models"
 	"errors"
+	"fmt"
+	"math/rand"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
@@ -15,6 +19,20 @@ type User struct {
 	Password  string `json:"password"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
+}
+
+func GenerateToken() string {
+	rand.NewSource(time.Now().UnixNano())
+	var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	token := make([]rune, 32)
+	for i := range token {
+		token[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return fmt.Sprintf("%x", token)
+}
+
+func SendConfirmationEmail(email string, token string) {
+	fmt.Println("Sending email to", email, "with token", token)
 }
 
 func CreateResponseUser(userModel models.User) User {
@@ -34,7 +52,20 @@ func CreateUser(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return c.Status(500).JSON(err.Error())
+	}
+
+	user.Password = string(hashedPassword)
+
+	user.ConfirmationToken = GenerateToken()
+	user.Confirmed = false
+
 	database.Database.Db.Create(&user)
+
+	SendConfirmationEmail(user.Email, user.ConfirmationToken)
+
 	responseUser := CreateResponseUser(user)
 
 	return c.Status(200).JSON(responseUser)
