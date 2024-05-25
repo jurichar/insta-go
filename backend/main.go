@@ -19,8 +19,12 @@ func setupRoutes(app *fiber.App) {
 	// welcome endpoint
 	app.Get("/api", welcome)
 
+	// authentication endpoints
+	app.Post("/api/register", routes.Register)
+	// app.Post("/api/login", routes.Login)
+
 	// user endpoints
-	app.Post("/api/users", routes.CreateUser)
+	// app.Post("/api/users", routes.CreateUser)
 	app.Get("/api/users", routes.GetUsers)
 	app.Get("/api/users/:id", routes.GetUser)
 	app.Put("/api/users/:id", routes.UpdateUser)
@@ -30,6 +34,14 @@ func setupRoutes(app *fiber.App) {
 	app.Post("/api/products", routes.CreateProduct)
 
 	app.Static("/", "../frontend")
+
+	app.Get("/register", func(c *fiber.Ctx) error {
+		return c.SendFile("../frontend/register.html")
+	})
+
+	// app.Get("/login", func(c *fiber.Ctx) error {
+	// 	return c.SendFile("../frontend/login.html")
+	// })
 
 }
 

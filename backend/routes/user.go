@@ -45,7 +45,7 @@ func CreateResponseUser(userModel models.User) User {
 	}
 }
 
-func CreateUser(c *fiber.Ctx) error {
+func Register(c *fiber.Ctx) error {
 	var user models.User
 
 	if err := c.BodyParser(&user); err != nil {
