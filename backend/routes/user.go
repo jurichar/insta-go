@@ -68,7 +68,7 @@ func Register(c *fiber.Ctx) error {
 
 	responseUser := CreateResponseUser(user)
 
-	return c.Status(200).JSON(responseUser)
+	return c.Status(201).JSON(responseUser)
 }
 
 func GetUsers(c *fiber.Ctx) error {
