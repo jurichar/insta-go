@@ -39,9 +39,9 @@ func setupRoutes(app *fiber.App) {
 		return c.SendFile("../frontend/register.html")
 	})
 
-	// app.Get("/login", func(c *fiber.Ctx) error {
-	// 	return c.SendFile("../frontend/login.html")
-	// })
+	app.Get("/login", func(c *fiber.Ctx) error {
+		return c.SendFile("../frontend/login.html")
+	})
 
 }
 
