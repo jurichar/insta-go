@@ -21,7 +21,7 @@ func setupRoutes(app *fiber.App) {
 
 	// authentication endpoints
 	app.Post("/api/register", routes.Register)
-	// app.Post("/api/login", routes.Login)
+	app.Post("/api/login", routes.Login)
 
 	// user endpoints
 	// app.Post("/api/users", routes.CreateUser)

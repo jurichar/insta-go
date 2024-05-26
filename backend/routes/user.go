@@ -71,6 +71,37 @@ func Register(c *fiber.Ctx) error {
 	return c.Status(201).JSON(responseUser)
 }
 
+func Login(c *fiber.Ctx) error {
+	type LoginInput struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	var input LoginInput
+
+	if err := c.BodyParser(&input); err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	var user models.User
+
+	database.Database.Db.Find(&user, "email = ?", input.Email)
+
+	if user.ID == 0 {
+		fmt.Println("User not found with email:", input.Email)
+		return c.Status(400).JSON("User not found")
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		fmt.Println("Invalid credentials for user:", user.Email)
+		return c.Status(400).JSON("Invalid credentials")
+	}
+
+	responseUser := CreateResponseUser(user)
+
+	return c.Status(200).JSON(responseUser)
+}
+
 func GetUsers(c *fiber.Ctx) error {
 	users := []models.User{}
 
